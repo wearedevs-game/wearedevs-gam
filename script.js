@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", function() {
   // Global State
   // ----------------------
   let accounts = loadAccounts();
-  let currentUser = null; // will be set upon login/signup
+  let currentUser = null; // Set on login/signup
 
   // ----------------------
   // Default Account Template
@@ -114,6 +114,7 @@ document.addEventListener("DOMContentLoaded", function() {
   // ----------------------
   // Authentication: Login & Signup
   // ----------------------
+  accounts = loadAccounts();
   loginSubmit.addEventListener("click", () => {
     const username = loginUsername.value.trim();
     const password = loginPassword.value.trim();
@@ -184,10 +185,9 @@ document.addEventListener("DOMContentLoaded", function() {
   });
 
   // ----------------------
-  // Leaderboard Button (placeholder function)
+  // Leaderboard Button (placeholder)
   // ----------------------
   viewLeaderboard.addEventListener("click", () => {
-    // For now, simply display a placeholder message.
     addMessage("Leaderboard feature coming soon!", "system");
   });
 
@@ -267,7 +267,7 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 
   // ----------------------
-  // Message Display Helper with simple markdown formatting
+  // Message Display Helper with Markdown Formatting
   // ----------------------
   function addMessage(message, type) {
     const msgElem = document.createElement("div");
@@ -333,7 +333,7 @@ document.addEventListener("DOMContentLoaded", function() {
       currentUser.balance += begAmount;
       response = `You begged and received ${begAmount} Gcoins!`;
     }
-    // Jobs Commands (placeholders)
+    // Jobs Commands
     else if (command === "-jobs") {
       response = "Available jobs: Farmer, Miner, Fisher. Use -work <job> to work.";
     } else if (command === "-work") {
@@ -581,6 +581,8 @@ document.addEventListener("DOMContentLoaded", function() {
     const rewards = { farmer: 100, miner: 150, fisher: 80 };
     const reward = rewards[job.toLowerCase()] || 50;
     user.balance += reward;
+    user.jobs.active = job;
+    user.jobs.totalWorked++;
     return `You worked as a ${job} and earned ${reward} Gcoins!`;
   }
   function handleGamble(user, amount) {
@@ -647,18 +649,93 @@ document.addEventListener("DOMContentLoaded", function() {
 - Wealthy players can shape destiny with '-customitem'.
 - Explore, trade, and plan carefully for success.`;
   }
+  function getCraftablesList() {
+    let list = "Available Crafting Recipes:\n";
+    craftingRecipes.forEach(recipe => {
+      list += `• ${recipe.item}: Requires `;
+      for (let ing in recipe.ingredients) {
+        list += `${recipe.ingredients[ing]} ${ing}, `;
+      }
+      list = list.slice(0, -2) + `. Success Rate: ${Math.floor(recipe.successRate * 100)}%\n`;
+    });
+    return list;
+  }
+  function getItemInfo(user, itemName) {
+    let custom = user.customItems.find(item => (typeof item === "object" && item.name.toLowerCase() === itemName.toLowerCase()));
+    if (custom) {
+      return `Custom Item: ${custom.name}\nEffect: ${custom.effect}\nUses: ${custom.uses}\nCooldown: ${custom.cooldown} turns`;
+    }
+    let shopItem = shopItems.find(it => it.name.toLowerCase() === itemName.toLowerCase());
+    if (shopItem) {
+      return `Shop Item: ${shopItem.name}\nCategory: ${shopItem.category}\nPrice: ${shopItem.price} Gcoins`;
+    }
+    return "Item not found.";
+  }
+  function getEventInfo() {
+    const currentDate = new Date();
+    const eventDate = new Date("2025-03-27");
+    let eventActive = currentDate.toDateString() === eventDate.toDateString();
+    return `🌸 Spring Blossom Event 🌸
+Duration: April 1 - April 30
+${eventActive ? "Event is ACTIVE!" : "Event is not active yet."}
+Quests:
+- Spring Bloom: Plant flowers in Spring Meadows.
+- Pollinator's Path: Help bees pollinate.
+- Festival Fun: Join the Spring Carnival.
+Rewards:
+- Earn Spring Tokens for quests.
+- Exclusive badges & titles for top players.
+Use -quest to start a quest and -event for more info.`;
+  }
   function getTutorial() {
     return `**Available Commands:**
-Economy: -info, -balance (-bal), -deposit (-dep) <amount>, -withdraw (-with) <amount>, -pay <@user> <amount>, -daily, -beg
-Jobs: -jobs, -work <job>, -rob
-Gambling: -gamble <amount>, -roulette, -bet <amount/all/half>
-Shop & Items: -shop, -buy <item> [amount], -sell <item> [amount], -inventory (-inv), -iteminfo <item>, -sortinv, -filterinv <keyword>
-Crafting: -craftables, -craft <item> or -craft custom <item details>
-Custom: -customitem "Item Name" effect:"Effect description" cost:<amount>
-Trade: -trade <@user> <item> <amount>
-Lore: -lore
-Customization: -customize (coming soon)
-Help: -help
+Economy:
+- -info
+- -balance (-bal)
+- -deposit (-dep) <amount>
+- -withdraw (-with) <amount>
+- -pay <@user> <amount>
+- -daily
+- -beg
+
+Jobs:
+- -jobs
+- -work <job>
+- -rob <@user>
+
+Gambling:
+- -gamble <amount>
+- -roulette
+- -bet <amount/all/half>
+
+Shop & Items:
+- -shop
+- -buy <item> [amount]
+- -sell <item> [amount]
+- -inventory (-inv)
+- -iteminfo <item>
+- -sortinv
+- -filterinv <keyword>
+
+Crafting:
+- -craftables
+- -craft <item> or -craft custom <item details>
+
+Custom:
+- -customitem "Item Name" effect:"Effect description" cost:<amount>
+
+Trade:
+- -trade <@user> <item> <amount>
+
+Lore:
+- -lore
+
+Customization:
+- -customize (coming soon)
+
+Help:
+- -help
+
 (Note: Commands are case-insensitive)`;
   }
   function formatUserInfo(user) {

@@ -2,49 +2,88 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Stakes Game</title>
+  <title>FortunePlay</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- Login Modal: forces the user to enter a username -->
-  <div id="loginModal" class="modal">
-    <div class="modal-content">
-      <h2>Welcome to Stakes Game!</h2>
-      <p>Please enter your username to continue:</p>
-      <input type="text" id="loginInput" placeholder="Username" autocomplete="off" />
-      <button id="loginSubmit">Login</button>
-    </div>
-  </div>
-
-  <!-- Top Bar with Theme Toggle (Login is handled by modal) -->
+  <!-- Top Bar with Theme Toggle, Chat Switch, Leaderboard, and Market -->
   <div id="topbar">
     <button id="themeToggle">Toggle Theme</button>
+    <button id="switchChat">Switch Chat</button>
+    <button id="viewLeaderboard">Leaderboard</button>
+    <button id="openMarket">Market</button>
+  </div>
+
+  <!-- Authentication Modal (Login / Sign Up) -->
+  <div id="authModal" class="modal">
+    <div class="modal-content">
+      <div class="tabs">
+        <button id="loginTab" class="active">Login</button>
+        <button id="signupTab">Sign Up</button>
+      </div>
+      <div id="loginForm" class="form-section">
+        <h2>Login</h2>
+        <input type="text" id="loginUsername" placeholder="Username" autocomplete="off" />
+        <input type="password" id="loginPassword" placeholder="Password" autocomplete="off" />
+        <button id="loginSubmit">Login</button>
+      </div>
+      <div id="signupForm" class="form-section hidden">
+        <h2>Sign Up</h2>
+        <input type="text" id="signupUsername" placeholder="Username" autocomplete="off" />
+        <input type="password" id="signupPassword" placeholder="Password" autocomplete="off" />
+        <input type="password" id="signupConfirmPassword" placeholder="Confirm Password" autocomplete="off" />
+        <button id="signupSubmit">Sign Up</button>
+      </div>
+    </div>
   </div>
 
   <!-- Main Game Container (hidden until login) -->
   <div id="container" class="hidden">
     <header>
-      <h1>Stakes Game</h1>
+      <h1>FortunePlay</h1>
       <p>Type commands to play. Use <code>-help</code> for a list of commands.</p>
     </header>
-    <main id="chat">
+    <!-- Main Chat Area -->
+    <main id="chatArea">
       <div id="messages"></div>
       <div id="input-area">
         <input type="text" id="commandInput" placeholder="Enter command..." autocomplete="off" autofocus />
         <button id="sendButton">Send</button>
       </div>
     </main>
-    <!-- Quest Log Section -->
+    <!-- Quest Log -->
     <aside id="questLog">
       <h2>Quest Log</h2>
       <ul id="quests"></ul>
     </aside>
+    <!-- Trade Chat Room (toggleable) -->
+    <section id="tradeChat" class="hidden">
+      <header>
+        <h2>Trade Chat Room</h2>
+      </header>
+      <div id="tradeMessages"></div>
+      <div id="tradeInputArea">
+        <input type="text" id="tradeInput" placeholder="Enter trade message..." autocomplete="off" />
+        <button id="tradeSendButton">Send</button>
+      </div>
+    </section>
+    <!-- Marketplace Modal -->
+    <div id="marketModal" class="modal hidden">
+      <div class="modal-content">
+        <h2>Marketplace</h2>
+        <div id="marketListings"></div>
+        <button id="closeMarket">Close Market</button>
+      </div>
+    </div>
   </div>
 
-  <!-- Audio elements for effects (replace src with real URLs if available) -->
+  <!-- Audio elements for effects -->
   <audio id="betWinSound" src="https://www.myinstants.com/media/sounds/vine-boom.mp3"></audio>
   <audio id="betLoseSound" src="https://www.myinstants.com/media/sounds/fail-trombone.mp3"></audio>
+  <audio id="craftSuccessSound" src="https://www.myinstants.com/media/sounds/success.mp3"></audio>
+  <audio id="craftFailSound" src="https://www.myinstants.com/media/sounds/fail.mp3"></audio>
 
   <script src="script.js"></script>
 </body>
 </html>
+

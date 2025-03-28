@@ -54,7 +54,6 @@ document.addEventListener("DOMContentLoaded", function() {
     { item: "Iron Sword", ingredients: { "iron ore": 5, "leather strap": 1 }, successRate: 0.7 },
     { item: "Wooden Shield", ingredients: { "wood plank": 10, "iron nail": 1 }, successRate: 0.75 }
   ];
-
   let shopItems = [
     { name: "Bodyguard", category: "Accessory", price: 500 },
     { name: "Flower Crown", category: "Accessory", price: 300 },
@@ -131,7 +130,7 @@ document.addEventListener("DOMContentLoaded", function() {
       return;
     }
     currentUser = accounts[username];
-    authModal.style.display = "none";
+    authModal.classList.add("hidden");
     container.classList.remove("hidden");
     addMessage(`<span class="highlight">Welcome back, ${currentUser.username}!</span>`, "system");
     loadTradeChatMessages();
@@ -156,7 +155,7 @@ document.addEventListener("DOMContentLoaded", function() {
     currentUser.password = password;
     accounts[username] = currentUser;
     saveAccounts(accounts);
-    authModal.style.display = "none";
+    authModal.classList.add("hidden");
     container.classList.remove("hidden");
     addMessage(`<span class="highlight">Account created. Welcome, ${currentUser.username}!</span>`, "system");
     loadTradeChatMessages();
@@ -185,10 +184,11 @@ document.addEventListener("DOMContentLoaded", function() {
   });
 
   // ----------------------
-  // Leaderboard Button
+  // Leaderboard Button (placeholder function)
   // ----------------------
   viewLeaderboard.addEventListener("click", () => {
-    displayLeaderboard();
+    // For now, simply display a placeholder message.
+    addMessage("Leaderboard feature coming soon!", "system");
   });
 
   // ----------------------
@@ -446,18 +446,15 @@ document.addEventListener("DOMContentLoaded", function() {
     itemName = itemName.toLowerCase();
     let recipe = craftingRecipes.find(r => r.item.toLowerCase() === itemName);
     if (!recipe) return "No recipe found for that item.";
-    // For simplicity, assume materials are in inventory as plain strings and must be deducted.
     for (let ingredient in recipe.ingredients) {
       let count = user.inventory.filter(i => i.toLowerCase() === ingredient.toLowerCase()).length;
       if (count < recipe.ingredients[ingredient]) return `Not enough ${ingredient} to craft ${recipe.item}.`;
     }
-    // Deduct materials
     for (let ingredient in recipe.ingredients) {
       for (let i = 0; i < recipe.ingredients[ingredient]; i++) {
         removeItem(user.inventory, ingredient);
       }
     }
-    // Random success chance
     if (Math.random() < recipe.successRate) {
       user.inventory.push(recipe.item);
       playSound("craftSuccessSound");
@@ -468,8 +465,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
   }
   function handleCustomItem(user, details) {
-    // For non-detailed custom crafting via -craft custom <item details>
-    let cost = 500; // fixed cost for custom crafting attempt
+    let cost = 500;
     if (user.balance < cost) return "Not enough balance to craft a custom item.";
     user.balance -= cost;
     if (Math.random() < 0.5) {
@@ -706,9 +702,4 @@ Help: -help
       sound.play();
     }
   }
-  
-  // ----------------------
-  // Initial call to load accounts if already logged in (optional)
-  // ----------------------
-  // (For testing purposes, you can auto-display the auth modal or log in automatically)
 });

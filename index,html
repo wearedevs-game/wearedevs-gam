@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Stakes Game</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Login Modal: forces the user to enter a username -->
+  <div id="loginModal" class="modal">
+    <div class="modal-content">
+      <h2>Welcome to Stakes Game!</h2>
+      <p>Please enter your username to continue:</p>
+      <input type="text" id="loginInput" placeholder="Username" autocomplete="off" />
+      <button id="loginSubmit">Login</button>
+    </div>
+  </div>
+
+  <!-- Top Bar with Theme Toggle (Login is handled by modal) -->
+  <div id="topbar">
+    <button id="themeToggle">Toggle Theme</button>
+  </div>
+
+  <!-- Main Game Container (hidden until login) -->
+  <div id="container" class="hidden">
+    <header>
+      <h1>Stakes Game</h1>
+      <p>Type commands to play. Use <code>-help</code> for a list of commands.</p>
+    </header>
+    <main id="chat">
+      <div id="messages"></div>
+      <div id="input-area">
+        <input type="text" id="commandInput" placeholder="Enter command..." autocomplete="off" autofocus />
+        <button id="sendButton">Send</button>
+      </div>
+    </main>
+    <!-- Quest Log Section -->
+    <aside id="questLog">
+      <h2>Quest Log</h2>
+      <ul id="quests"></ul>
+    </aside>
+  </div>
+
+  <!-- Audio elements for effects (replace src with real URLs if available) -->
+  <audio id="betWinSound" src="https://www.myinstants.com/media/sounds/vine-boom.mp3"></audio>
+  <audio id="betLoseSound" src="https://www.myinstants.com/media/sounds/fail-trombone.mp3"></audio>
+
+  <script src="script.js"></script>
+</body>
+</html>

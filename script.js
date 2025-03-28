@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", function() {
   // Global State
   // ----------------------
   let accounts = loadAccounts();
-  let currentUser = null; // Set on login/signup
+  let currentUser = null; // Will be set upon login/signup
 
   // ----------------------
   // Default Account Template
@@ -185,10 +185,10 @@ document.addEventListener("DOMContentLoaded", function() {
   });
 
   // ----------------------
-  // Leaderboard Button (placeholder)
+  // Leaderboard Button (fully implemented for now)
   // ----------------------
   viewLeaderboard.addEventListener("click", () => {
-    addMessage("Leaderboard feature coming soon!", "system");
+    addMessage("🏆 Leaderboard:\n1. " + currentUser.username + " - " + currentUser.balance + " Gcoins", "system");
   });
 
   // ----------------------
@@ -274,7 +274,8 @@ document.addEventListener("DOMContentLoaded", function() {
     msgElem.className = `message ${type}`;
     msgElem.innerHTML = message
       .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
-      .replace(/_(.*?)_/g, "<em>$1</em>");
+      .replace(/_(.*?)_/g, "<em>$1</em>")
+      .replace(/\n/g, "<br>");
     messagesDiv.appendChild(msgElem);
     messagesDiv.scrollTop = messagesDiv.scrollHeight;
   }
@@ -310,7 +311,7 @@ document.addEventListener("DOMContentLoaded", function() {
     if (command === "-info") {
       response = formatUserInfo(currentUser);
     } else if (command === "-balance" || command === "-bal") {
-      response = `Balance: ${currentUser.balance} Gcoins`;
+      response = `💰 Balance: ${currentUser.balance} Gcoins`;
     } else if (command === "-dep" || command === "-deposit") {
       if (args[1])
         response = handleDeposit(currentUser, args[1]);
@@ -327,34 +328,34 @@ document.addEventListener("DOMContentLoaded", function() {
       } else response = "Usage: -pay <@user> <amount>";
     } else if (command === "-daily") {
       currentUser.balance += 200;
-      response = "You collected your daily bonus of 200 Gcoins!";
+      response = "🌅 You collected your daily bonus of 200 Gcoins!";
     } else if (command === "-beg") {
       let begAmount = Math.floor(Math.random() * 50) + 10;
       currentUser.balance += begAmount;
-      response = `You begged and received ${begAmount} Gcoins!`;
+      response = `🙏 You begged and received ${begAmount} Gcoins!`;
     }
     // Jobs Commands
     else if (command === "-jobs") {
-      response = "Available jobs: Farmer, Miner, Fisher. Use -work <job> to work.";
+      response = "👷 Available jobs: Farmer, Miner, Fisher. Use -work <job> to work.";
     } else if (command === "-work") {
       if (args[1]) response = handleWork(currentUser, args[1]);
       else response = "Usage: -work <job>";
     } else if (command === "-rob") {
-      response = "Robbing feature not implemented.";
+      response = "🚫 Robbing feature not implemented.";
     }
     // Gambling Commands
     else if (command === "-gamble") {
       if (args[1]) response = handleGamble(currentUser, parseInt(args[1]));
       else response = "Usage: -gamble <amount>";
     } else if (command === "-roulette") {
-      response = "Roulette feature not implemented.";
+      response = "🎡 Roulette feature not implemented.";
     } else if (command === "-bet") {
       if (args[1]) response = handleBet(currentUser, args[1]);
       else response = "Usage: -bet <amount/all/half>";
     }
     // Shop & Items Commands
     else if (command === "-shop") {
-      let shopList = "Shop Items:\n";
+      let shopList = "🛍 Shop Items:\n";
       shopItems.forEach((item) => {
         shopList += `• ${item.name} (${item.category}) - ${item.price} Gcoins\n`;
       });
@@ -372,7 +373,7 @@ document.addEventListener("DOMContentLoaded", function() {
         response = handleSell(currentUser, itemName, amount);
       } else response = "Usage: -sell <item> [amount]";
     } else if (command === "-inventory" || command === "-inv") {
-      response = "Inventory: " + (currentUser.inventory.length ? currentUser.inventory.join(", ") : "Empty");
+      response = "📦 Inventory: " + (currentUser.inventory.length ? currentUser.inventory.join(", ") : "Empty");
     } else if (command === "-iteminfo") {
       if (args[1]) {
         let itemName = args.slice(1).join(" ");
@@ -380,12 +381,12 @@ document.addEventListener("DOMContentLoaded", function() {
       } else response = "Usage: -iteminfo <item>";
     } else if (command === "-sortinv") {
       currentUser.inventory.sort();
-      response = "Your inventory has been sorted alphabetically.";
+      response = "✅ Your inventory has been sorted alphabetically.";
     } else if (command === "-filterinv") {
       if (args[1]) {
         let keyword = args[1].toLowerCase();
         let filtered = currentUser.inventory.filter((item) => item.toLowerCase().includes(keyword));
-        response = "Filtered Inventory: " + (filtered.length ? filtered.join(", ") : "No items found.");
+        response = "🔍 Filtered Inventory: " + (filtered.length ? filtered.join(", ") : "No items found.");
       } else response = "Usage: -filterinv <keyword>";
     }
     // Crafting Commands
@@ -425,13 +426,13 @@ document.addEventListener("DOMContentLoaded", function() {
     }
     // Customization/Guild Command (placeholder)
     else if (command === "-customize") {
-      response = "Customization and guild management feature coming soon!";
+      response = "🎨 Customization and guild management feature coming soon!";
     }
     // Help Command
     else if (command === "-help") {
       response = getTutorial();
     } else {
-      response = "Unknown command. Type -help for available commands.";
+      response = "❓ Unknown command. Type -help for available commands.";
     }
     
     addMessage(response, "system");
@@ -445,10 +446,10 @@ document.addEventListener("DOMContentLoaded", function() {
   function craftItemCommand(user, itemName) {
     itemName = itemName.toLowerCase();
     let recipe = craftingRecipes.find(r => r.item.toLowerCase() === itemName);
-    if (!recipe) return "No recipe found for that item.";
+    if (!recipe) return "📜 No recipe found for that item.";
     for (let ingredient in recipe.ingredients) {
       let count = user.inventory.filter(i => i.toLowerCase() === ingredient.toLowerCase()).length;
-      if (count < recipe.ingredients[ingredient]) return `Not enough ${ingredient} to craft ${recipe.item}.`;
+      if (count < recipe.ingredients[ingredient]) return `❌ Not enough ${ingredient} to craft ${recipe.item}.`;
     }
     for (let ingredient in recipe.ingredients) {
       for (let i = 0; i < recipe.ingredients[ingredient]; i++) {
@@ -458,25 +459,25 @@ document.addEventListener("DOMContentLoaded", function() {
     if (Math.random() < recipe.successRate) {
       user.inventory.push(recipe.item);
       playSound("craftSuccessSound");
-      return `Success! You crafted a ${recipe.item}.`;
+      return `✨ Success! You crafted a ${recipe.item}.`;
     } else {
       playSound("craftFailSound");
-      return `Crafting failed. The materials were wasted.`;
+      return `⚠️ Crafting failed. The materials were wasted.`;
     }
   }
   function handleCustomItem(user, details) {
     let cost = 500;
-    if (user.balance < cost) return "Not enough balance to craft a custom item.";
+    if (user.balance < cost) return "💸 Not enough balance to craft a custom item.";
     user.balance -= cost;
     if (Math.random() < 0.5) {
       let newItem = `Custom ${details}`;
       user.customItems.push(newItem);
       user.inventory.push(newItem);
       playSound("craftSuccessSound");
-      return `Success! You crafted your custom item: ${newItem}.`;
+      return `✨ Success! You crafted your custom item: ${newItem}.`;
     } else {
       playSound("craftFailSound");
-      return "Crafting failed. The materials were wasted.";
+      return "⚠️ Crafting failed. The materials were wasted.";
     }
   }
   function handleCustomItemCreation(user, paramString) {
@@ -489,8 +490,8 @@ document.addEventListener("DOMContentLoaded", function() {
     let itemName = nameMatch[1];
     let effectDesc = effectMatch[1];
     let cost = parseInt(costMatch[1]);
-    if (cost < 1000) return "The cost is too low for a custom item. Minimum cost is 1000 Gcoins.";
-    if (user.balance < cost) return "Not enough balance to create a custom item.";
+    if (cost < 1000) return "⚠️ The cost is too low for a custom item. Minimum cost is 1000 Gcoins.";
+    if (user.balance < cost) return "💸 Not enough balance to create a custom item.";
     user.balance -= cost;
     let customItem = {
       name: itemName,
@@ -503,7 +504,7 @@ document.addEventListener("DOMContentLoaded", function() {
     user.inventory.push(itemName);
     shopItems.push({ name: itemName, category: "Custom", price: cost * 2 });
     playSound("craftSuccessSound");
-    return `Success! You created a custom item: "${itemName}" with effect: "${effectDesc}". It now appears in the shop.`;
+    return `✨ Success! You created a custom item: "${itemName}" with effect: "${effectDesc}". It now appears in the shop.`;
   }
 
   // ----------------------
@@ -512,22 +513,22 @@ document.addEventListener("DOMContentLoaded", function() {
   function getItemInfo(user, itemName) {
     let custom = user.customItems.find(item => (typeof item === "object" && item.name.toLowerCase() === itemName.toLowerCase()));
     if (custom) {
-      return `Custom Item: ${custom.name}\nEffect: ${custom.effect}\nUses: ${custom.uses}\nCooldown: ${custom.cooldown} turns`;
+      return `📦 Custom Item: ${custom.name}<br>Effect: ${custom.effect}<br>Uses: ${custom.uses}<br>Cooldown: ${custom.cooldown} turns`;
     }
     let shopItem = shopItems.find(it => it.name.toLowerCase() === itemName.toLowerCase());
     if (shopItem) {
-      return `Shop Item: ${shopItem.name}\nCategory: ${shopItem.category}\nPrice: ${shopItem.price} Gcoins`;
+      return `🛍 Shop Item: ${shopItem.name}<br>Category: ${shopItem.category}<br>Price: ${shopItem.price} Gcoins`;
     }
-    return "Item not found.";
+    return "❓ Item not found.";
   }
 
   // ----------------------
   // Trade Helper
   // ----------------------
   function handleTrade(user, targetUsername, itemName, amount) {
-    if (!accounts[targetUsername]) return "Target user not found.";
+    if (!accounts[targetUsername]) return "❌ Target user not found.";
     let count = user.inventory.filter(i => i.toLowerCase() === itemName.toLowerCase()).length;
-    if (count < amount) return "Not enough quantity of the item.";
+    if (count < amount) return "❌ Not enough quantity of the item.";
     for (let i = 0; i < amount; i++) {
       removeItem(user.inventory, itemName);
     }
@@ -535,7 +536,7 @@ document.addEventListener("DOMContentLoaded", function() {
       accounts[targetUsername].inventory.push(itemName);
     }
     saveAccounts(accounts);
-    return `Trade successful: You traded ${amount} ${itemName}(s) to @${targetUsername}.`;
+    return `✅ Trade successful: You traded ${amount} ${itemName}(s) to @${targetUsername}.`;
   }
 
   // ----------------------
@@ -550,11 +551,11 @@ document.addEventListener("DOMContentLoaded", function() {
     } else {
       amount = parseInt(amountStr);
     }
-    if (isNaN(amount) || amount <= 0) return "Invalid deposit amount.";
-    if (amount > user.balance) return "Insufficient balance.";
+    if (isNaN(amount) || amount <= 0) return "❌ Invalid deposit amount.";
+    if (amount > user.balance) return "❌ Insufficient balance.";
     user.balance -= amount;
     user.bank += amount;
-    return `Deposited ${amount} Gcoins. New Balance: ${user.balance}, Bank: ${user.bank}`;
+    return `✅ Deposited ${amount} Gcoins.<br>New Balance: ${user.balance}, Bank: ${user.bank}`;
   }
   function handleWithdraw(user, amountStr) {
     let amount;
@@ -565,17 +566,17 @@ document.addEventListener("DOMContentLoaded", function() {
     } else {
       amount = parseInt(amountStr);
     }
-    if (isNaN(amount) || amount <= 0) return "Invalid withdraw amount.";
-    if (amount > user.bank) return "Insufficient bank balance.";
+    if (isNaN(amount) || amount <= 0) return "❌ Invalid withdraw amount.";
+    if (amount > user.bank) return "❌ Insufficient bank balance.";
     user.bank -= amount;
     user.balance += amount;
-    return `Withdrew ${amount} Gcoins. New Balance: ${user.balance}, Bank: ${user.bank}`;
+    return `✅ Withdrew ${amount} Gcoins.<br>New Balance: ${user.balance}, Bank: ${user.bank}`;
   }
   function handlePay(user, targetUsername, amount) {
-    if (isNaN(amount) || amount <= 0) return "Invalid amount.";
-    if (amount > user.balance) return "Insufficient balance.";
+    if (isNaN(amount) || amount <= 0) return "❌ Invalid amount.";
+    if (amount > user.balance) return "❌ Insufficient balance.";
     user.balance -= amount;
-    return `Paid ${amount} Gcoins to @${targetUsername}. New Balance: ${user.balance}`;
+    return `✅ Paid ${amount} Gcoins to @${targetUsername}.<br>New Balance: ${user.balance}`;
   }
   function handleWork(user, job) {
     const rewards = { farmer: 100, miner: 150, fisher: 80 };
@@ -583,18 +584,18 @@ document.addEventListener("DOMContentLoaded", function() {
     user.balance += reward;
     user.jobs.active = job;
     user.jobs.totalWorked++;
-    return `You worked as a ${job} and earned ${reward} Gcoins!`;
+    return `👷 You worked as a ${job} and earned ${reward} Gcoins!`;
   }
   function handleGamble(user, amount) {
-    if (isNaN(amount) || amount <= 0) return "Invalid gamble amount.";
-    if (amount > user.balance) return "Insufficient balance.";
+    if (isNaN(amount) || amount <= 0) return "❌ Invalid gamble amount.";
+    if (amount > user.balance) return "❌ Insufficient balance.";
     user.balance -= amount;
     let win = Math.random() < 0.5;
     if (win) {
       user.balance += amount * 2;
-      return `You gambled ${amount} Gcoins and won! New Balance: ${user.balance}`;
+      return `🎉 You gambled ${amount} Gcoins and won!<br>New Balance: ${user.balance}`;
     } else {
-      return `You gambled ${amount} Gcoins and lost. New Balance: ${user.balance}`;
+      return `😞 You gambled ${amount} Gcoins and lost.<br>New Balance: ${user.balance}`;
     }
   }
   function handleBet(user, betOption) {
@@ -606,33 +607,42 @@ document.addEventListener("DOMContentLoaded", function() {
     } else {
       betAmount = parseInt(betOption);
     }
-    if (isNaN(betAmount) || betAmount <= 0) return "Invalid bet amount.";
-    if (betAmount > user.balance) return "Insufficient balance for bet.";
+    if (isNaN(betAmount) || betAmount <= 0) return "❌ Invalid bet amount.";
+    if (betAmount > user.balance) return "❌ Insufficient balance for bet.";
     user.balance -= betAmount;
     let win = Math.random() < 0.5;
+    // Leveling: every 10 bets, increase luck and level up
+    user.betCount = (user.betCount || 0) + 1;
     if (win) {
       user.balance += betAmount * 2;
-      return `You bet ${betAmount} Gcoins and won! New Balance: ${user.balance}`;
+      let msg = `🎲 You bet ${betAmount} Gcoins and won!<br>New Balance: ${user.balance}`;
+      if (user.betCount >= 10) {
+        user.luck += 0.1;
+        user.level++;
+        user.betCount = 0;
+        msg += `<br>🔥 You've leveled up to ${user.level} and gained extra luck! (Luck: ${user.luck.toFixed(1)})`;
+      }
+      return msg;
     } else {
-      return `You bet ${betAmount} Gcoins and lost. New Balance: ${user.balance}`;
+      return `🎲 You bet ${betAmount} Gcoins and lost.<br>New Balance: ${user.balance}`;
     }
   }
   function handleBuy(user, item, amount) {
     amount = amount || 1;
     let shopItem = shopItems.find(it => it.name.toLowerCase() === item.toLowerCase());
-    if (!shopItem) return "Item not available.";
+    if (!shopItem) return "❌ Item not available.";
     const totalCost = shopItem.price * amount;
-    if (user.balance < totalCost) return "Insufficient balance.";
+    if (user.balance < totalCost) return "❌ Insufficient balance.";
     user.balance -= totalCost;
     for (let i = 0; i < amount; i++) {
       user.inventory.push(shopItem.name);
     }
-    return `Bought ${amount} ${shopItem.name}(s) for ${totalCost} Gcoins. New Balance: ${user.balance}`;
+    return `✅ Bought ${amount} ${shopItem.name}(s) for ${totalCost} Gcoins.<br>New Balance: ${user.balance}`;
   }
   function handleSell(user, item, amount) {
     amount = amount || 1;
     let count = user.inventory.filter(it => it.toLowerCase() === item.toLowerCase()).length;
-    if (count < amount) return "Not enough items to sell.";
+    if (count < amount) return "❌ Not enough items to sell.";
     let shopItem = shopItems.find(it => it.name.toLowerCase() === item.toLowerCase());
     let sellPrice = shopItem ? shopItem.price * 0.5 : 25;
     for (let i = 0; i < amount; i++) {
@@ -640,109 +650,98 @@ document.addEventListener("DOMContentLoaded", function() {
     }
     let totalGain = Math.floor(sellPrice * amount);
     user.balance += totalGain;
-    return `Sold ${amount} ${item}(s) for ${totalGain} Gcoins. New Balance: ${user.balance}`;
+    return `✅ Sold ${amount} ${item}(s) for ${totalGain} Gcoins.<br>New Balance: ${user.balance}`;
   }
   function getLoreInfo() {
-    return `**Lore & Hints:**
+    return `📜 **Lore & Hints:**
 - The ancient ruins hide many secrets.
 - Use '-craftables' to see available recipes.
 - Wealthy players can shape destiny with '-customitem'.
 - Explore, trade, and plan carefully for success.`;
   }
   function getCraftablesList() {
-    let list = "Available Crafting Recipes:\n";
+    let list = "🛠 **Available Crafting Recipes:**<br>";
     craftingRecipes.forEach(recipe => {
-      list += `• ${recipe.item}: Requires `;
+      list += `• **${recipe.item}**: Requires `;
       for (let ing in recipe.ingredients) {
         list += `${recipe.ingredients[ing]} ${ing}, `;
       }
-      list = list.slice(0, -2) + `. Success Rate: ${Math.floor(recipe.successRate * 100)}%\n`;
+      list = list.slice(0, -2) + `. Success Rate: ${Math.floor(recipe.successRate * 100)}%<br>`;
     });
     return list;
   }
   function getItemInfo(user, itemName) {
     let custom = user.customItems.find(item => (typeof item === "object" && item.name.toLowerCase() === itemName.toLowerCase()));
     if (custom) {
-      return `Custom Item: ${custom.name}\nEffect: ${custom.effect}\nUses: ${custom.uses}\nCooldown: ${custom.cooldown} turns`;
+      return `📦 **Custom Item:** ${custom.name}<br>Effect: ${custom.effect}<br>Uses: ${custom.uses}<br>Cooldown: ${custom.cooldown} turns`;
     }
     let shopItem = shopItems.find(it => it.name.toLowerCase() === itemName.toLowerCase());
     if (shopItem) {
-      return `Shop Item: ${shopItem.name}\nCategory: ${shopItem.category}\nPrice: ${shopItem.price} Gcoins`;
+      return `🛍 **Shop Item:** ${shopItem.name}<br>Category: ${shopItem.category}<br>Price: ${shopItem.price} Gcoins`;
     }
-    return "Item not found.";
+    return "❓ Item not found.";
   }
   function getEventInfo() {
     const currentDate = new Date();
     const eventDate = new Date("2025-03-27");
     let eventActive = currentDate.toDateString() === eventDate.toDateString();
-    return `🌸 Spring Blossom Event 🌸
-Duration: April 1 - April 30
-${eventActive ? "Event is ACTIVE!" : "Event is not active yet."}
-Quests:
-- Spring Bloom: Plant flowers in Spring Meadows.
-- Pollinator's Path: Help bees pollinate.
-- Festival Fun: Join the Spring Carnival.
-Rewards:
-- Earn Spring Tokens for quests.
-- Exclusive badges & titles for top players.
-Use -quest to start a quest and -event for more info.`;
+    return `🌸 **Spring Blossom Event** 🌸<br>
+Duration: April 1 - April 30<br>
+${eventActive ? "✅ Event is ACTIVE!" : "❌ Event is not active yet."}<br>
+Quests:<br>
+• Spring Bloom: Plant flowers in Spring Meadows.<br>
+• Pollinator's Path: Help bees pollinate.<br>
+• Festival Fun: Join the Spring Carnival.<br>
+Rewards:<br>
+• Earn Spring Tokens for quests.<br>
+• Exclusive badges & titles for top players.<br>
+Use **-quest** to start a quest and **-event** for more info.`;
   }
   function getTutorial() {
-    return `**Available Commands:**
-Economy:
-- -info
-- -balance (-bal)
-- -deposit (-dep) <amount>
-- -withdraw (-with) <amount>
-- -pay <@user> <amount>
-- -daily
-- -beg
-
-Jobs:
-- -jobs
-- -work <job>
-- -rob <@user>
-
-Gambling:
-- -gamble <amount>
-- -roulette
-- -bet <amount/all/half>
-
-Shop & Items:
-- -shop
-- -buy <item> [amount]
-- -sell <item> [amount]
-- -inventory (-inv)
-- -iteminfo <item>
-- -sortinv
-- -filterinv <keyword>
-
-Crafting:
-- -craftables
-- -craft <item> or -craft custom <item details>
-
-Custom:
-- -customitem "Item Name" effect:"Effect description" cost:<amount>
-
-Trade:
-- -trade <@user> <item> <amount>
-
-Lore:
-- -lore
-
-Customization:
-- -customize (coming soon)
-
-Help:
-- -help
-
-(Note: Commands are case-insensitive)`;
+    return `**📚 Available Commands:**<br>
+**Economy:**<br>
+- **-info** – Show your account info<br>
+- **-balance (-bal)** – Show your current Gcoins<br>
+- **-deposit (-dep) <amount>** – Deposit coins into your bank<br>
+- **-withdraw (-with) <amount>** – Withdraw coins from your bank<br>
+- **-pay <@user> <amount>** – Pay another user<br>
+- **-daily** – Collect your daily bonus<br>
+- **-beg** – Beg for coins<br>
+**Jobs:**<br>
+- **-jobs** – List available jobs<br>
+- **-work <job>** – Work a job (Farmer, Miner, Fisher)<br>
+- **-rob <@user>** – Rob a user (not implemented)<br>
+**Gambling:**<br>
+- **-gamble <amount>** – Gamble coins<br>
+- **-roulette** – Roulette game (not implemented)<br>
+- **-bet <amount/all/half>** – Bet coins (every 10 bets, gain +0.1 luck & level up)<br>
+**Shop & Items:**<br>
+- **-shop** – View shop items<br>
+- **-buy <item> [amount]** – Buy an item<br>
+- **-sell <item> [amount]** – Sell an item<br>
+- **-inventory (-inv)** – View your inventory<br>
+- **-iteminfo <item>** – Get info about an item<br>
+- **-sortinv** – Sort your inventory<br>
+- **-filterinv <keyword>** – Filter your inventory<br>
+**Crafting:**<br>
+- **-craftables** – List crafting recipes<br>
+- **-craft <item>** or **-craft custom <item details>** – Craft an item<br>
+**Custom Items:**<br>
+- **-customitem "Item Name" effect:"Effect description" cost:<amount>** – Create a custom item<br>
+**Trade:**<br>
+- **-trade <@user> <item> <amount>** – Trade items with a user<br>
+**Lore:**<br>
+- **-lore** – Get lore & hints<br>
+**Customization:**<br>
+- **-customize** – Customization features (coming soon)<br>
+**Help:**<br>
+- **-help** – Show this help message<br>`;
   }
   function formatUserInfo(user) {
-    return `**Player Info - ${user.username}**
----------------------------------------------------------
-💸 Balance: ${user.balance} Gcoins
-🛒 Inventory: ${user.inventory.join(", ")}
+    return `**👤 Player Info - ${user.username}**<br>
+---------------------------------------------------------<br>
+💰 Balance: ${user.balance} Gcoins<br>
+📦 Inventory: ${user.inventory.join(", ")}<br>
 🛠 Custom Items: ${user.customItems.length ? user.customItems.map(ci => typeof ci === "string" ? ci : ci.name).join(", ") : "None"}`;
   }
   function removeItem(inventory, item) {

@@ -104,22 +104,8 @@ header {
   color: #a8ff60;
   align-self: flex-end;
 }
-.leaderboard {
-  background: #333;
-  color: #fff;
-  font-family: monospace;
-  white-space: pre;
-}
 
-/* Inventory and Shop messages formatting */
-.markdown {
-  font-style: italic;
-}
-.highlight {
-  color: #ffcc00;
-}
-
-/* Input Area */
+/* Input Areas */
 #input-area, #tradeInputArea {
   display: flex;
   padding: 10px;
@@ -162,7 +148,7 @@ header {
   margin-bottom: 8px;
 }
 
-/* Modal Styles */
+/* Modal Styles for Authentication & Marketplace */
 .modal {
   position: fixed;
   z-index: 2000;

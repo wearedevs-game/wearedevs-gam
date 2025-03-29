@@ -2,38 +2,39 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>FortunePlay</title>
-  <!-- Modern Font -->
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <!-- Top Bar with Buttons -->
-  <div id="topbar">
+  <header id="topbar">
     <button id="themeBtn">🎨 Theme</button>
     <button id="switchChat">💬 Switch Chat</button>
     <button id="viewLeaderboard">🏆 Leaderboard</button>
     <button id="openMarket">🛒 Market</button>
-  </div>
+  </header>
 
-  <!-- Authentication Modal (Login / Sign Up) -->
+  <!-- Authentication Modal -->
   <div id="authModal" class="modal">
-    <div class="modal-content">
+    <div class="modal-content card">
+      <h1 class="modal-title">Welcome to FortunePlay</h1>
       <div class="tabs">
-        <button id="loginTab" class="active">🔑 Login</button>
-        <button id="signupTab">📝 Sign Up</button>
+        <button id="loginTab" class="active">Login</button>
+        <button id="signupTab">Sign Up</button>
       </div>
       <div id="loginForm" class="form-section">
         <h2>Login</h2>
-        <input type="text" id="loginUsername" placeholder="Username" autocomplete="off" />
-        <input type="password" id="loginPassword" placeholder="Password" autocomplete="off" />
+        <input type="text" id="loginUsername" placeholder="Username">
+        <input type="password" id="loginPassword" placeholder="Password">
         <button id="loginSubmit">Login</button>
       </div>
       <div id="signupForm" class="form-section hidden">
         <h2>Sign Up</h2>
-        <input type="text" id="signupUsername" placeholder="Username" autocomplete="off" />
-        <input type="password" id="signupPassword" placeholder="Password" autocomplete="off" />
-        <input type="password" id="signupConfirmPassword" placeholder="Confirm Password" autocomplete="off" />
+        <input type="text" id="signupUsername" placeholder="Username">
+        <input type="password" id="signupPassword" placeholder="Password">
+        <input type="password" id="signupConfirmPassword" placeholder="Confirm Password">
         <button id="signupSubmit">Sign Up</button>
       </div>
     </div>
@@ -41,17 +42,17 @@
 
   <!-- Theme Customization HUD -->
   <div id="customizeHUD" class="modal hidden">
-    <div class="modal-content">
+    <div class="modal-content card">
       <h2>Customize Theme</h2>
       <div class="theme-section">
-        <label for="bgUpload">Upload Background Image:</label><br>
-        <input type="file" id="bgUpload" accept="image/*"><br>
+        <label for="bgUpload">Upload Background Image:</label>
+        <input type="file" id="bgUpload" accept="image/*">
         <button id="removeBgBtn">Remove Background</button>
       </div>
       <div class="theme-section">
-        <label for="primaryColor">Primary Color:</label><br>
-        <input type="color" id="primaryColor" value="#2c2c2c"><br><br>
-        <label for="secondaryColor">Secondary Color:</label><br>
+        <label for="primaryColor">Primary Color:</label>
+        <input type="color" id="primaryColor" value="#2c2c2c">
+        <label for="secondaryColor">Secondary Color:</label>
         <input type="color" id="secondaryColor" value="#1a1a1a">
       </div>
       <div class="theme-buttons">
@@ -61,39 +62,35 @@
     </div>
   </div>
 
-  <!-- Main Game Container (hidden until login) -->
+  <!-- Main Game Container (Hidden until login) -->
   <div id="container" class="hidden">
-    <header>
+    <header class="game-header">
       <h1>FortunePlay</h1>
       <p>Type commands to play. Use <code>-help</code> for a list of commands.</p>
     </header>
-    <!-- Main Chat Area -->
     <main id="chatArea">
       <div id="messages"></div>
       <div id="input-area">
-        <input type="text" id="commandInput" placeholder="Enter command..." autocomplete="off" autofocus />
+        <input type="text" id="commandInput" placeholder="Enter command...">
         <button id="sendButton">Send</button>
       </div>
     </main>
-    <!-- Quest Log -->
     <aside id="questLog">
       <h2>Quest Log 📜</h2>
       <ul id="quests"></ul>
     </aside>
-    <!-- Trade Chat Room (toggleable) -->
     <section id="tradeChat" class="hidden">
       <header>
         <h2>Trade Chat Room 💱</h2>
       </header>
       <div id="tradeMessages"></div>
       <div id="tradeInputArea">
-        <input type="text" id="tradeInput" placeholder="Enter trade message..." autocomplete="off" />
+        <input type="text" id="tradeInput" placeholder="Enter trade message...">
         <button id="tradeSendButton">Send</button>
       </div>
     </section>
-    <!-- Marketplace Modal -->
     <div id="marketModal" class="modal hidden">
-      <div class="modal-content">
+      <div class="modal-content card">
         <h2>Marketplace 🛒</h2>
         <div id="marketListings"></div>
         <button id="closeMarket">Close Market</button>
@@ -101,7 +98,7 @@
     </div>
   </div>
 
-  <!-- Audio elements for effects -->
+  <!-- Audio Elements for Effects -->
   <audio id="betWinSound" src="https://www.myinstants.com/media/sounds/vine-boom.mp3"></audio>
   <audio id="betLoseSound" src="https://www.myinstants.com/media/sounds/fail-trombone.mp3"></audio>
   <audio id="craftSuccessSound" src="https://www.myinstants.com/media/sounds/success.mp3"></audio>
@@ -110,4 +107,3 @@
   <script src="script.js"></script>
 </body>
 </html>
-

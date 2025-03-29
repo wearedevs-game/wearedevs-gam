@@ -6,12 +6,13 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- Top Bar with Theme Toggle, Chat Switch, Leaderboard, and Market -->
+  <!-- Top Bar with Theme Toggle, Chat Switch, Leaderboard, Market, and Theme Customization -->
   <div id="topbar">
     <button id="themeToggle">🌞 Toggle Theme</button>
     <button id="switchChat">💬 Switch Chat</button>
     <button id="viewLeaderboard">🏆 Leaderboard</button>
     <button id="openMarket">🛒 Market</button>
+    <button id="customizeThemeBtn">🎨 Customize Theme</button>
   </div>
 
   <!-- Authentication Modal (Login / Sign Up) -->
@@ -34,6 +35,19 @@
         <input type="password" id="signupConfirmPassword" placeholder="Confirm Password" autocomplete="off" />
         <button id="signupSubmit">Sign Up</button>
       </div>
+    </div>
+  </div>
+
+  <!-- Theme Customization HUD -->
+  <div id="customizeHUD" class="modal hidden">
+    <div class="modal-content">
+      <h2>Customize Theme</h2>
+      <label for="bgUpload">Upload Background Image:</label><br>
+      <input type="file" id="bgUpload" accept="image/*"><br><br>
+      <label for="primaryColor">Primary Color:</label><br>
+      <input type="color" id="primaryColor" value="#2c2c2c"><br><br>
+      <button id="saveThemeBtn">Save Theme</button>
+      <button id="closeCustomizeHUD">Close</button>
     </div>
   </div>
 
@@ -67,7 +81,7 @@
         <button id="tradeSendButton">Send</button>
       </div>
     </section>
-    <!-- Marketplace Modal -->
+    <!-- Marketplace Modal (includes Custom Items) -->
     <div id="marketModal" class="modal hidden">
       <div class="modal-content">
         <h2>Marketplace 🛒</h2>

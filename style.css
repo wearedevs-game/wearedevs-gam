@@ -44,14 +44,11 @@ body.light-theme {
 }
 
 /* Container */
-#container.hidden {
-  display: none;
-}
 #container {
   max-width: 900px;
   width: 100%;
   margin: 80px auto 20px auto;
-  background: #2c2c2c;
+  background: #2c2c2c; /* Will be replaced by theme's primary or secondary color */
   border-radius: 8px;
   box-shadow: 0 4px 20px rgba(0,0,0,0.6);
   display: flex;
@@ -175,17 +172,20 @@ header {
   border-radius: 8px;
   text-align: center;
   color: #ddd;
-  width: 80%;
+  width: 90%;
   max-width: 400px;
+  transition: transform 0.3s;
 }
-.modal-content input {
-  width: 80%;
-  padding: 10px;
-  margin: 10px 0;
-  border: 1px solid #555;
-  border-radius: 4px;
-  background: #222;
-  color: #ddd;
+.modal-content input[type="file"],
+.modal-content input[type="color"] {
+  width: 90%;
+}
+.theme-section {
+  margin-bottom: 15px;
+}
+.theme-buttons {
+  display: flex;
+  justify-content: space-around;
 }
 .modal-content button {
   padding: 10px 20px;
@@ -244,6 +244,12 @@ header {
 
 /* Responsive */
 @media (max-width: 600px) {
+  #container {
+    margin: 60px 10px;
+    height: calc(100vh - 80px);
+  }
+}
+
   #container {
     margin: 60px 10px;
     height: calc(100vh - 80px);

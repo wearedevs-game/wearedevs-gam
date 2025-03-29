@@ -1,252 +1,267 @@
-/* Global hidden class */
-.hidden {
-  display: none !important;
+:root {
+  --primary-color: #ffffff;
+  --secondary-color: #f0f0f0;
+  --accent-color: #007BFF;
+  --text-color: #333333;
+  --background-color: #e9ecef;
+  --card-bg: #ffffff;
+  --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --border-radius: 8px;
 }
 
-/* Reset & Base Styles */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
+
 body {
   font-family: 'Roboto', sans-serif;
-  background: #1a1a1a;
-  color: #ddd;
-  min-height: 100vh;
-  transition: background 0.5s ease, color 0.5s ease;
-}
-body.light-theme {
-  background: #f5f5f5;
-  color: #333;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  line-height: 1.6;
+  transition: background-color 0.3s, color 0.3s;
 }
 
 /* Top Bar */
-#topbar {
+header#topbar {
   position: fixed;
   top: 10px;
   right: 20px;
-  z-index: 1000;
   display: flex;
-  gap: 8px;
+  gap: 10px;
+  z-index: 1000;
 }
-#topbar button {
-  padding: 8px 12px;
-  background: #444;
+
+header#topbar button {
+  padding: 8px 16px;
+  background-color: var(--accent-color);
   color: #fff;
   border: none;
-  border-radius: 4px;
+  border-radius: var(--border-radius);
   cursor: pointer;
-  transition: background 0.3s;
-}
-#topbar button:hover {
-  background: #666;
+  transition: background-color 0.3s;
 }
 
-/* Container */
+header#topbar button:hover {
+  background-color: #0056b3;
+}
+
+/* Modals */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.modal.hidden {
+  display: none;
+}
+
+.modal-content {
+  background-color: var(--card-bg);
+  padding: 20px;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.modal-title {
+  margin-bottom: 20px;
+  font-size: 1.8em;
+  color: var(--accent-color);
+}
+
+.tabs {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.tabs button {
+  flex: 1;
+  padding: 10px;
+  background-color: var(--secondary-color);
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.tabs button.active {
+  background-color: var(--accent-color);
+  color: #fff;
+}
+
+.form-section {
+  margin-bottom: 15px;
+}
+
+.form-section input {
+  width: 90%;
+  padding: 10px;
+  margin: 8px 0;
+  border: 1px solid #ccc;
+  border-radius: var(--border-radius);
+}
+
+.form-section button {
+  padding: 10px 20px;
+  background-color: var(--accent-color);
+  color: #fff;
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.form-section button:hover {
+  background-color: #0056b3;
+}
+
+/* Main Container */
 #container {
   max-width: 900px;
-  width: 100%;
-  margin: 80px auto 20px auto;
-  background: #2c2c2c; /* Will be replaced by theme's primary or secondary color */
-  border-radius: 8px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+  margin: 100px auto 20px;
+  background-color: var(--card-bg);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
   display: flex;
   flex-direction: column;
-  height: calc(100vh - 120px);
-  overflow: hidden;
-  transition: background 0.5s;
 }
 
-/* Header */
-header {
-  background: #333;
+/* Game Header */
+.game-header {
+  background-color: var(--accent-color);
   color: #fff;
   padding: 20px;
   text-align: center;
-  border-top-left-radius: 8px;
-  border-top-right-radius: 8px;
 }
 
 /* Chat Area */
 #chatArea {
   flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  padding: 10px;
-  position: relative;
-  overflow: hidden;
-}
-#messages, #tradeMessages {
+  padding: 20px;
   overflow-y: auto;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  padding: 10px;
 }
 
-/* Message Styles */
+#messages {
+  margin-bottom: 20px;
+}
+
 .message {
-  padding: 8px 12px;
-  border-radius: 6px;
-  max-width: 80%;
-  word-wrap: break-word;
-  line-height: 1.5;
-  background: #3a3a3a;
-  color: #a8ff60;
-  animation: fadeIn 0.3s ease-in-out;
-}
-.system {
-  background: #444;
-  color: #7abaff;
-  align-self: flex-start;
-}
-.user {
-  background: #3a3a3a;
-  color: #a8ff60;
-  align-self: flex-end;
+  margin-bottom: 10px;
+  padding: 10px 15px;
+  border-radius: var(--border-radius);
+  background-color: var(--secondary-color);
 }
 
-/* Input Areas */
-#input-area, #tradeInputArea {
-  display: flex;
-  padding: 10px;
-  background: #333;
-  border-top: 1px solid #555;
+.message.user {
+  background-color: var(--accent-color);
+  color: #fff;
+  text-align: right;
 }
-#commandInput, #tradeInput {
+
+/* Input Area */
+#input-area {
+  display: flex;
+  padding: 10px 20px;
+  background-color: var(--secondary-color);
+  border-top: 1px solid #ccc;
+}
+
+#input-area input {
   flex: 1;
   padding: 10px;
-  font-size: 1em;
-  border: 1px solid #555;
-  border-radius: 4px;
-  background: #222;
-  color: #ddd;
+  border: 1px solid #ccc;
+  border-radius: var(--border-radius);
 }
-#sendButton, #tradeSendButton {
-  padding: 10px 20px;
+
+#input-area button {
   margin-left: 10px;
-  background: #444;
+  padding: 10px 20px;
+  background-color: var(--accent-color);
   color: #fff;
   border: none;
-  border-radius: 4px;
+  border-radius: var(--border-radius);
   cursor: pointer;
-  transition: background 0.3s;
 }
-#sendButton:hover, #tradeSendButton:hover {
-  background: #666;
+
+#input-area button:hover {
+  background-color: #0056b3;
 }
 
 /* Quest Log */
 #questLog {
-  background: #222;
-  padding: 10px;
-  border-top: 1px solid #555;
-  color: #ddd;
-  max-height: 150px;
+  padding: 15px;
+  background-color: var(--secondary-color);
+  border-top: 1px solid #ccc;
   overflow-y: auto;
 }
+
 #questLog h2 {
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
 
-/* Modal Styles */
-.modal {
-  position: fixed;
-  z-index: 2000;
-  left: 0;
-  top: 0;
-  width: 100%;
+/* Trade Chat */
+#tradeChat {
+  display: none;
+  flex-direction: column;
   height: 100%;
-  overflow: auto;
-  background: rgba(0,0,0,0.8);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.modal-content {
-  background: #2c2c2c;
-  padding: 20px;
-  border-radius: 8px;
-  text-align: center;
-  color: #ddd;
-  width: 90%;
-  max-width: 400px;
-  transition: transform 0.3s;
-}
-.modal-content input[type="file"],
-.modal-content input[type="color"] {
-  width: 90%;
-}
-.theme-section {
-  margin-bottom: 15px;
-}
-.theme-buttons {
-  display: flex;
-  justify-content: space-around;
-}
-.modal-content button {
-  padding: 10px 20px;
-  background: #444;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background 0.3s;
-}
-.modal-content button:hover {
-  background: #666;
 }
 
-/* Tabs for Login / Sign Up */
-.tabs {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 15px;
+#tradeChat header {
+  background-color: var(--accent-color);
+  color: #fff;
+  padding: 15px;
+  text-align: center;
 }
-.tabs button {
+
+#tradeMessages {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+#tradeInputArea {
+  display: flex;
+  padding: 10px 20px;
+  background-color: var(--secondary-color);
+  border-top: 1px solid #ccc;
+}
+
+#tradeInputArea input {
   flex: 1;
   padding: 10px;
-  border: none;
-  background: #444;
+  border: 1px solid #ccc;
+  border-radius: var(--border-radius);
+}
+
+#tradeInputArea button {
+  margin-left: 10px;
+  padding: 10px 20px;
+  background-color: var(--accent-color);
   color: #fff;
+  border: none;
+  border-radius: var(--border-radius);
   cursor: pointer;
-  transition: background 0.3s;
-}
-.tabs button.active {
-  background: #666;
-}
-.form-section.hidden {
-  display: none;
 }
 
-/* Visual Effects */
-.spring-event {
-  transition: background 1s ease;
-  background: linear-gradient(to right, #228B22, #FF69B4) !important;
-}
-.bet-win {
-  transition: background 1s ease;
-  background: linear-gradient(to right, #FFFF99, #FFFACD) !important;
-}
-.bet-lose {
-  transition: background 1s ease;
-  background: linear-gradient(to right, #FF6F61, #FFB6C1) !important;
+#tradeInputArea button:hover {
+  background-color: #0056b3;
 }
 
-/* Animations */
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-/* Responsive */
 @media (max-width: 600px) {
   #container {
-    margin: 60px 10px;
-    height: calc(100vh - 80px);
+    margin: 80px 10px;
   }
 }
 

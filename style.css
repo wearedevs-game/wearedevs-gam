@@ -1,4 +1,4 @@
-/* Global hidden class to hide elements */
+/* Global hidden class */
 .hidden {
   display: none !important;
 }
@@ -149,7 +149,7 @@ header {
   margin-bottom: 8px;
 }
 
-/* Modal Styles for Authentication & Marketplace */
+/* Modal Styles */
 .modal {
   position: fixed;
   z-index: 2000;

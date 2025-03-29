@@ -3,18 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <title>FortunePlay</title>
-  <!-- Use a modern Google Font -->
+  <!-- Modern Font -->
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- Top Bar with Theme Toggle, Chat Switch, Leaderboard, and Market -->
+  <!-- Top Bar with Buttons -->
   <div id="topbar">
-    <button id="themeToggle">🌞 Toggle Theme</button>
+    <button id="themeBtn">🎨 Theme</button>
     <button id="switchChat">💬 Switch Chat</button>
     <button id="viewLeaderboard">🏆 Leaderboard</button>
     <button id="openMarket">🛒 Market</button>
-    <button id="customizeThemeBtn">🎨 Customize Theme</button>
   </div>
 
   <!-- Authentication Modal (Login / Sign Up) -->
@@ -44,12 +43,21 @@
   <div id="customizeHUD" class="modal hidden">
     <div class="modal-content">
       <h2>Customize Theme</h2>
-      <label for="bgUpload">Upload Background Image:</label><br>
-      <input type="file" id="bgUpload" accept="image/*"><br><br>
-      <label for="primaryColor">Primary Color:</label><br>
-      <input type="color" id="primaryColor" value="#2c2c2c"><br><br>
-      <button id="saveThemeBtn">Save Theme</button>
-      <button id="closeCustomizeHUD">Close</button>
+      <div class="theme-section">
+        <label for="bgUpload">Upload Background Image:</label><br>
+        <input type="file" id="bgUpload" accept="image/*"><br>
+        <button id="removeBgBtn">Remove Background</button>
+      </div>
+      <div class="theme-section">
+        <label for="primaryColor">Primary Color:</label><br>
+        <input type="color" id="primaryColor" value="#2c2c2c"><br><br>
+        <label for="secondaryColor">Secondary Color:</label><br>
+        <input type="color" id="secondaryColor" value="#1a1a1a">
+      </div>
+      <div class="theme-buttons">
+        <button id="saveThemeBtn">Save Theme</button>
+        <button id="closeCustomizeHUD">Close</button>
+      </div>
     </div>
   </div>
 
@@ -102,3 +110,4 @@
   <script src="script.js"></script>
 </body>
 </html>
+
